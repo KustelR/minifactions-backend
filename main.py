@@ -12,6 +12,8 @@ def read_root():
     game.register_faction(faction)
     faction.claim(game.grid.at(0, 0))
     faction.name = "espada"
+    game.unregister_faction(faction)
+    game.unregister_faction(faction)
     return game
 
 

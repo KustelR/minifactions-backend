@@ -11,21 +11,28 @@ class Game:
     igroks: dict[UUID, Igrok] = {}
 
     def register_faction(self, faction: Faction) -> UUID:
+        if faction.id != None: return faction.id
         id = uuid4()
         faction.id = id
         self.factions[id] = faction
 
 
     def unregister_faction(self, faction: Faction):
-        self.factions.clear(faction.id)
+        if faction.id == None:return
+        self.factions.pop(faction.id)
+        faction.kill()
+        faction.id = None
 
     def register_igrok(self, igrok: Igrok) -> UUID:
+        if igrok.id != None: return igrok.id
         id = uuid4()
         igrok.id = id
         self.igroks[id] = igrok
 
     def unregister_igrok(self, igrok: Igrok):
-        self.factions.clear(igrok.id)
+        if igrok.id == None:return
+        self.igroks.pop(igrok.id)
+        igrok.id = None
 
     def turn(self):
         self.grid.delta()

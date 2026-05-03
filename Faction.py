@@ -18,6 +18,13 @@ class Faction:
     
     def claim(self, chunk: Chunk):
         chunk.owned_by = self
+        self.chunks.append(chunk)
+
+    def clear_chunks(self):
+        for chunk in self.chunks: chunk.owned_by = None
+
+    def kill(self):
+        self.clear_chunks()
 
     def delta(self):
         pass
