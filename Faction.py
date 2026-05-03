@@ -1,8 +1,10 @@
 from Grid import Chunk
+from uuid import UUID
 
 
 class Faction:
     name = None
+    id: UUID | None = None
     igroks = []
     chunks = []
     emeralds = 0

@@ -1,4 +1,8 @@
+from uuid import UUID
+
+
 class Igrok:
+    id: UUID | None = None
     stamina: int = 0
     military: int = 0
     building: int = 0

@@ -1,17 +1,18 @@
 from fastapi import FastAPI
-from Grid import Grid
 from Faction import Faction
+from Game import Game
 
 app = FastAPI()
 
 
 @app.get("/")
 def read_root():
-    grid = Grid(100, 100)
+    game = Game(10,10)
     faction = Faction("loitsk")
-    faction.claim(grid.at(0, 0))
+    game.register_faction(faction)
+    faction.claim(game.grid.at(0, 0))
     faction.name = "espada"
-    return grid
+    return game
 
 
 @app.get("/items/{item_id}")
