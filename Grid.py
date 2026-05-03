@@ -4,6 +4,11 @@ class Grid:
 
     def at(self, x: int, y: int):
         return self.chunks[y][x]
+    
+    def delta(self):
+        for line in self.chunks:
+            for chunk in line:
+                chunk.delta()
 
     def __init__(self, height: int, width: int) -> Grid:
         self.chunks = generate_chunks(width, height)
