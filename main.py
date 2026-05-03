@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from Faction import Faction
+from Entities import Faction
 from Game import Game
 
 app = FastAPI()
@@ -8,12 +8,9 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     game = Game(10,10)
-    faction = Faction("loitsk")
-    game.register_faction(faction)
+    faction = game.create_faction("loitsk")
     faction.claim(game.grid.at(0, 0))
     faction.name = "espada"
-    game.unregister_faction(faction)
-    game.unregister_faction(faction)
     return game
 
 

@@ -1,7 +1,6 @@
 from Grid import Grid
-from Faction import Faction
+from Entities import Faction, Igrok
 from uuid import uuid4, UUID
-from Igrok import Igrok
 
 
 
@@ -33,6 +32,16 @@ class Game:
         if igrok.id == None:return
         self.igroks.pop(igrok.id)
         igrok.id = None
+
+    def create_faction(self, name: str) -> Faction:
+        faction = Faction(name)
+        self.register_faction(faction)
+        return faction
+
+    def create_igrok(self, m, b, t, p, s) -> Igrok:
+        igrok = Igrok(m, b, t, p, s)
+        self.register_igrok(igrok)
+        return igrok
 
     def turn(self):
         self.grid.delta()
