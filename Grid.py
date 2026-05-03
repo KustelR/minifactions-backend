@@ -1,9 +1,11 @@
+import json
+
 from Entities import Chunk
 
 
 class Grid:
-    test = 1
-    chunks = [[]]
+    chunks: list[list[Chunk]] = [[]]
+    current = 0
 
     def at(self, x: int, y: int):
         return self.chunks[y][x]
@@ -16,6 +18,20 @@ class Grid:
     def __init__(self, height: int, width: int) -> Grid:
         self.chunks = generate_chunks(width, height)
 
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.current >= len(self.chunks):
+            raise StopIteration()
+        tgt = list(map(lambda chunk: chunk.to_dict(), self.chunks[self.current]))
+        self.current += 1
+        return tgt
+
+
+    #def __list__(self):
+    #    return list(map(lambda line: list(map(lambda chunk: chunk.toJSON(), line)), self.chunks))
+
 
 
 def generate_chunks(width: int, height: int):
@@ -23,7 +39,7 @@ def generate_chunks(width: int, height: int):
     for y in range(height):
         line = []
         for x in range(width):
-            line.append(Chunk())
+            line.append(Chunk((x, y)))
         result.append(line)
 
     return result

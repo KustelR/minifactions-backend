@@ -1,3 +1,5 @@
+import json
+
 from Grid import Grid
 from Entities import Faction, Igrok
 from uuid import uuid4, UUID
@@ -45,9 +47,15 @@ class Game:
 
     def turn(self):
         self.grid.delta()
-        for faction in self.factions: faction.delta()
-        for igrok in self.igroks: igrok.delta()
+        for faction in self.factions.values(): faction.delta()
+        for igrok in self.igroks.values(): igrok.delta()
 
 
     def __init__(self, gridHeight: int, gridWitdht: int):
         self.grid = Grid(gridHeight, gridWitdht)
+
+    def toJSON(self):
+        return {
+            "grid": list(self.grid),
+            "factions": list(map(lambda faction: faction.to_dict(), self.factions.values())),
+        }

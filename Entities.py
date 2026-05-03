@@ -1,11 +1,13 @@
+import json
 from uuid import UUID
+from typing import Callable
 
 
 class Faction:
     name = None
     id: UUID | None = None
-    igroks = []
-    chunks = []
+    igroks: list[Igrok] = []
+    chunks: list[Chunk] = []
     emeralds = 0
     building_materials = 0
     food = 0
@@ -32,6 +34,21 @@ class Faction:
     def delta(self):
         pass
 
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "id": str(self.id),
+            "igroks": list(map(lambda igrok: igrok.to_dict(), self.igroks)),
+            "resources": {
+                "emeralds": self.emeralds,
+                "building_materials": self.building_materials,
+                "raw_materials": self.raw_materias,
+                "weapons": self.weapons,
+                "food": self.food
+            },
+            "chunks": list(map(lambda chunk: chunk.to_dict, self.chunks))
+        }
+
 
 class Igrok:
     id: UUID | None = None
@@ -41,6 +58,11 @@ class Igrok:
     building: int = 0
     tech: int = 0
     psychology: int = 0
+
+    task: Task | None = None
+
+    def assign(self, task: Task):
+        self.task = task
 
 
     def __init__(self, military: int, building: int, tech: int, psychology: int, stamina: int):
@@ -52,20 +74,44 @@ class Igrok:
 
 
     def delta(self):
-        pass
+        self.task.delta()
+
+    def to_dict(self):
+        return {
+            "id": str(self.id),
+            "faction": str(self.faction.id),
+            "stats": {
+                "stamina": self.stamina,
+                "building": self.building,
+                "military": self.military,
+                "psychology": self.psychology,
+                "tech": self.tech,
+                "task": self.task.to_dict() if self.task else None
+            }
+        }
 
 
 class Chunk:
-    owned_by = None
-    terrain_type = None
+    owned_by: Faction | None = None
+    terrain_type: str | None  = None
+    pos: tuple[int]
+    affected_by: list[Task]
 
-
-    def __init__(self):
+    def __init__(self, pos: int | int):
         self.terrain_type = "plains"
-
+        self.pos = pos
+        self.affected_by = []
 
     def delta(self):
         pass
+
+    def to_dict(self) -> dict:
+        return {
+            "owned_by": str(self.owned_by.id) if self.owned_by else None,
+            "terrain_type": self.terrain_type,
+            "pos": self.pos,
+            "affected_by": list(map(lambda task: task.to_dict(), self.affected_by))
+        }
 
 class Task:
     igrok: Igrok
