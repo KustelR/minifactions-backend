@@ -9,7 +9,6 @@ app = FastAPI()
 def start_gather_wood(task: Task):
     print(task.chunk.to_dict())
     task.chunk.affected_by.append(task)
-    pass
 
 
 def end_gather_wood(task: Task):
