@@ -1,4 +1,3 @@
-from Grid import Chunk
 from uuid import UUID
 
 
@@ -54,3 +53,18 @@ class Igrok:
 
     def delta(self):
         pass
+
+
+class Chunk:
+    owned_by = None
+    terrain_type = None
+
+
+    def __init__(self):
+        self.terrain_type = "plains"
+
+
+    def delta(self):
+        pass
+
+

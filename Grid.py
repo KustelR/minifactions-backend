@@ -1,3 +1,6 @@
+from Entities import Chunk
+
+
 class Grid:
     test = 1
     chunks = [[]]
@@ -13,18 +16,6 @@ class Grid:
     def __init__(self, height: int, width: int) -> Grid:
         self.chunks = generate_chunks(width, height)
 
-
-class Chunk:
-    owned_by = None
-    terrain_type = None
-
-
-    def __init__(self):
-        self.terrain_type = "plains"
-
-
-    def delta(self):
-        pass
 
 
 def generate_chunks(width: int, height: int):
