@@ -114,6 +114,7 @@ class Chunk:
         }
 
 class Task:
+    name: str
     igrok: Igrok
     chunk: Chunk | None
     faction: Faction
@@ -124,6 +125,7 @@ class Task:
     end_invoke: Callable
 
     def __init__(self, 
+                 name: str,
                  igrok: Igrok, 
                  chunk: Chunk, 
                  faction: Faction, 
@@ -131,6 +133,7 @@ class Task:
                  start_invoke: Callable,
                  performing_invoke: Callable, 
                  end_invoke: Callable):
+        self.name = name
         self.igrok = igrok
         self.chunk = chunk
         self.faction = faction
@@ -151,9 +154,9 @@ class Task:
 
     def to_dict(self) -> dict:
         return {
+            "name": self.name,
             "igrok": str(self.igrok.id),
             "chunk": self.chunk.pos,
             "faction": str(self.faction.id),
             "duration": self.duration
         }
-
