@@ -185,5 +185,8 @@ class Building:
         self.chunk = chunk
         self.defense = defense
 
-    def delta():
+    def delta(self):
         pass
+
+    def to_dict(self):
+        return {"message": "YA SHOULDN'T SEE THIS. RUN."}
