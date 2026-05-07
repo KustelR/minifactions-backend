@@ -1,3 +1,4 @@
+import random
 from uuid import UUID, uuid4
 from typing import Callable
 
@@ -76,7 +77,10 @@ class Igrok:
 
     def delta(self):
         if self.task:
-            self.task.delta()
+            if self.stamina > 4 and random.random() < 0.2 or self.stamina < 1.0:
+                self.task.interrupt()
+            else:
+                self.task.delta()
 
     def to_dict(self):
         return {
