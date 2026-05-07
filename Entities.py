@@ -178,7 +178,8 @@ class Task:
         if self.duration > 0 and self.performing_invoke:
             self.duration -=1
             self.performing_invoke(self)
-        else:
+
+        if self.duration == 0:
             if (self.end_invoke):
                 self.end_invoke(self)
             self.clear()
