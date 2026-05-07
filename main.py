@@ -12,10 +12,15 @@ def read_root():
 
     faction = game.create_faction("loitsk")
     igrok = game.create_igrok(5, 4, 7, 4, 9)
-    igrok.assign(tasks["mining"].task(igrok, game.grid.at(0,0), faction, 2))
+    chunk = game.grid.at(0,0)
     faction.add_igrok(igrok)
     faction.claim(game.grid.at(0, 0))
     faction.name = "espada"
+    igrok.assign(tasks["mining"].task(igrok, chunk, faction, 1))
+    game.turn()
+    game.turn()
+    igrok.assign(tasks["building_farm"].task(igrok, chunk, faction))
+    game.turn()
     game.turn()
     game.turn()
     game.turn()
