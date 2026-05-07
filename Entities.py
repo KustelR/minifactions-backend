@@ -9,10 +9,10 @@ class Faction:
     igroks: list[Igrok] = []
     chunks: list[Chunk] = []
     emeralds = 0
-    building_materials = 0
-    food = 0
-    raw_materias = 0
-    weapons = 0
+    building_materials = 0.0
+    food = 0.0
+    raw_materials = 0.0
+    weapons = 0.0
 
     def __init__(self, name: str):
         self.name = name
@@ -42,7 +42,7 @@ class Faction:
             "resources": {
                 "emeralds": self.emeralds,
                 "building_materials": self.building_materials,
-                "raw_materials": self.raw_materias,
+                "raw_materials": self.raw_materials,
                 "weapons": self.weapons,
                 "food": self.food
             },
@@ -74,7 +74,8 @@ class Igrok:
 
 
     def delta(self):
-        self.task.delta()
+        if self.task:
+            self.task.delta()
 
     def to_dict(self):
         return {
