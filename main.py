@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from Game import Game
-from tasks import get_tasks
+from task_manager import get_tasks
 
 app = FastAPI()
 
