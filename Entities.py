@@ -159,7 +159,11 @@ class Task:
 
     def clear(self):
         ids = list(map(lambda affecting: affecting.id, self.chunk.affected_by))
-        index = ids.index(self.id)
+        try:
+            index = ids.index(self.id)
+        except ValueError:
+            print("[WARNING] This shit again. Run")
+            return
         self.chunk.affected_by.pop(index)
         self.igrok.task = None
 
