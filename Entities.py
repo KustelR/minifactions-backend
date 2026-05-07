@@ -61,6 +61,8 @@ class Igrok:
     task: Task | None = None
 
     def assign(self, task: Task):
+        if (self.task):
+            self.task.interrupt();
         self.task = task
 
 
@@ -111,6 +113,7 @@ class Chunk:
             "owned_by": str(self.owned_by.id) if self.owned_by else None,
             "terrain_type": self.terrain_type,
             "pos": self.pos,
+            "building": self.building.to_dict() if self.building else None,
             "affected_by": list(map(lambda task: task.to_dict(), self.affected_by))
         }
 
@@ -124,6 +127,7 @@ class Task:
     started = False
     start_invoke: Callable
     performing_invoke: Callable
+    interrupt_invoke: Callable
     end_invoke: Callable
 
     def __init__(self, 
@@ -134,6 +138,7 @@ class Task:
                  duration: int,
                  start_invoke: Callable,
                  performing_invoke: Callable, 
+                 interrupt_invoke: Callable,
                  end_invoke: Callable):
         self.name = name
         self.id = uuid4()
@@ -143,7 +148,20 @@ class Task:
         self.duration = duration
         self.start_invoke = start_invoke
         self.performing_invoke = performing_invoke
+        self.interrupt_invoke = interrupt_invoke
         self.end_invoke = end_invoke
+
+
+
+    def clear(self):
+        ids = list(map(lambda affecting: affecting.id, self.chunk.affected_by))
+        index = ids.index(self.id)
+        self.chunk.affected_by.pop(index)
+        self.igrok.task = None
+
+    def interrupt(self):
+        if self.interrupt_invoke: self.interrupt_invoke(self)
+        self.clear()
 
     def delta(self):
         if not self.started:
@@ -151,20 +169,18 @@ class Task:
             self.chunk.affected_by.append(self)
             if self.start_invoke:
                 self.start_invoke(self)
+
+
         if self.duration > 0 and self.performing_invoke:
             self.duration -=1
             self.performing_invoke(self)
         else:
             if (self.end_invoke):
                 self.end_invoke(self)
-
-            ids = list(map(lambda affecting: affecting.id, self.chunk.affected_by))
-            index = ids.index(self.id)
-            self.chunk.affected_by.pop(index)
-            self.igrok.task = None
+            self.clear()
 
 
-    def to_dict(self) -> dict:
+    def to_dict(self):
         return {
             "name": self.name,
             "id": str(self.id),

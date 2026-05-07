@@ -5,11 +5,13 @@ class StoredTask:
     name: str
     start_invoke: callable[Task] | None = None
     during_invoke: callable[Task] | None = None
+    interrupt_invoke: callable[Task] | None = None
     end_invoke: callable[Task] | None = None
     duration: int | None
     def __init__(self, name: str, 
                  start_invoke: callable[Task] | None = None, 
                  during_invoke: callable[Task] | None = None, 
+                 interrupt_invoke: callable[Task] | None = None,
                  end_invoke: callable[Task] | None = None,
                  duration: int | None = None):
         self.name = name
@@ -27,4 +29,5 @@ class StoredTask:
             self.duration if self.duration else duration if duration else 1,
             self.start_invoke,
             self.during_invoke,
-            self.end_invoke)
+            self.interrupt_invoke,
+            self.end_invoke,)
