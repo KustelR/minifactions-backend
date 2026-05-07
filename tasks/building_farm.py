@@ -1,6 +1,5 @@
-
-
 import random
+
 
 from Entities import Task
 from buildings.Farm import Farm
