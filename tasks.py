@@ -1,4 +1,4 @@
-from Entities import Task
+from Entities import Chunk, Faction, Igrok, Task
 
 
 class StoredTask:
@@ -9,3 +9,6 @@ class StoredTask:
         self.start_invoke = start_invoke
         self.during_invoke = during_invoke
         self.end_invoke = end_invoke
+
+    def task(this, igrok: Igrok, chunk: Chunk, faction: Faction, duration: int):
+        return Task(igrok, chunk, faction, duration, this.start_invoke, this.during_invoke, this.end_invoke)
