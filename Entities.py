@@ -1,5 +1,4 @@
-import json
-from uuid import UUID
+from uuid import UUID, uuid4
 from typing import Callable
 
 
@@ -46,7 +45,7 @@ class Faction:
                 "weapons": self.weapons,
                 "food": self.food
             },
-            "chunks": list(map(lambda chunk: chunk.to_dict, self.chunks))
+            "chunks": list(map(lambda chunk: chunk.pos, self.chunks))
         }
 
 
@@ -116,8 +115,9 @@ class Chunk:
 
 class Task:
     name: str
+    id: UUID
     igrok: Igrok
-    chunk: Chunk | None
+    chunk: Chunk
     faction: Faction
     duration: int
     started = False
@@ -135,6 +135,7 @@ class Task:
                  performing_invoke: Callable, 
                  end_invoke: Callable):
         self.name = name
+        self.id = uuid4()
         self.igrok = igrok
         self.chunk = chunk
         self.faction = faction
@@ -146,16 +147,26 @@ class Task:
     def delta(self):
         if not self.started:
             self.started = True
-            self.start_invoke(self)
-        if self.duration > 0:
+            self.chunk.affected_by.append(self)
+            if self.start_invoke:
+                self.start_invoke(self)
+        if self.duration > 0 and self.performing_invoke:
             self.duration -=1
             self.performing_invoke(self)
         else:
-            self.end_invoke(self)
+            if (self.end_invoke):
+                self.end_invoke(self)
+
+            ids = list(map(lambda affecting: affecting.id, self.chunk.affected_by))
+            index = ids.index(self.id)
+            self.chunk.affected_by.pop(index)
+            self.igrok.task = None
+
 
     def to_dict(self) -> dict:
         return {
             "name": self.name,
+            "id": str(self.id),
             "igrok": str(self.igrok.id),
             "chunk": self.chunk.pos,
             "faction": str(self.faction.id),

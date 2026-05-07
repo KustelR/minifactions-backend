@@ -29,11 +29,6 @@ class Grid:
         return tgt
 
 
-    #def __list__(self):
-    #    return list(map(lambda line: list(map(lambda chunk: chunk.toJSON(), line)), self.chunks))
-
-
-
 def generate_chunks(width: int, height: int):
     result = []
     for y in range(height):
