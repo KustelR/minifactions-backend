@@ -31,8 +31,8 @@ class Faction:
     def kill(self):
         self.clear_chunks()
 
-    def delta(self):
-        if self.building: self.building.delta();
+    def delta():
+        pass
 
     def to_dict(self):
         return {
@@ -104,7 +104,7 @@ class Chunk:
         self.affected_by = []
 
     def delta(self):
-        pass
+        if self.building: self.building.delta();
 
     def to_dict(self) -> dict:
         return {
