@@ -7,6 +7,7 @@ class Faction:
     id: UUID | None = None
     igroks: list[Igrok] = []
     chunks: list[Chunk] = []
+    building: Building
     emeralds = 0
     building_materials = 0.0
     food = 0.0
@@ -31,7 +32,7 @@ class Faction:
         self.clear_chunks()
 
     def delta(self):
-        pass
+        if self.building: self.building.delta();
 
     def to_dict(self):
         return {
@@ -172,3 +173,17 @@ class Task:
             "faction": str(self.faction.id),
             "duration": self.duration
         }
+
+
+class Building:
+    name: str
+    chunk: Chunk
+    defense: int
+
+    def __init__(self, name, chunk: Chunk, defense: int):
+        self.name = name
+        self.chunk = chunk
+        self.defense = defense
+
+    def delta():
+        pass
