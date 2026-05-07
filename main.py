@@ -12,7 +12,7 @@ def read_root():
 
     faction = game.create_faction("loitsk")
     igrok = game.create_igrok(5, 4, 7, 4, 9)
-    igrok.assign(tasks[0].task(igrok, game.grid.at(0,0), faction, 2))
+    igrok.assign(tasks["mining"].task(igrok, game.grid.at(0,0), faction, 2))
     faction.add_igrok(igrok)
     faction.claim(game.grid.at(0, 0))
     faction.name = "espada"
