@@ -7,7 +7,6 @@ class Faction:
     id: UUID | None = None
     igroks: list[Igrok] = []
     chunks: list[Chunk] = []
-    building: Building
     emeralds = 0
     building_materials = 0.0
     food = 0.0
@@ -31,7 +30,7 @@ class Faction:
     def kill(self):
         self.clear_chunks()
 
-    def delta():
+    def delta(self):
         pass
 
     def to_dict(self):
@@ -94,6 +93,7 @@ class Igrok:
 
 class Chunk:
     owned_by: Faction | None = None
+    building: Building | None = None
     terrain_type: str | None  = None
     pos: tuple[int]
     affected_by: list[Task]
